@@ -959,7 +959,9 @@ bool intersections(double &s, double &t, std::vector<double>& S,
                    std::vector<double>& T, path& p, path& q,
                    double fuzz, bool single, bool exact, unsigned depth)
 {
+#ifndef KNOTS_BUILD
   if(errorstream::interrupt) throw interrupted();
+#endif
 
   double fuzz2=max(fuzzFactor*fuzz*fuzz,Fuzz2);
 

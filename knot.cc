@@ -10,7 +10,10 @@
 #include "util.h"
 
 #include "angle.h"
+
+#ifndef KNOTS_BUILD
 #include "settings.h"
+#endif
 
 namespace camp {
 
@@ -20,20 +23,26 @@ namespace camp {
 template <typename T>
 ostream& info(ostream& o, const char *name, cvector<T>& v)
 {
+#ifndef KNOTS_BUILD
   if (settings::verbose > 3) {
+#endif
     o << name << ":\n\n";
 
     for(Int i=0; i < (Int) v.size(); ++i)
       o << v[i] << endl;
 
     o << endl;
+#ifndef KNOTS_BUILD
   }
+#endif
   return o;
 }
 
 ostream& info(ostream& o, string name, knotlist& l)
 {
+#ifndef KNOTS_BUILD
   if (settings::verbose > 3) {
+#endif
     o << name << ":\n\n";
 
     for(Int i=0; i < (Int) l.size(); ++i)
@@ -43,7 +52,9 @@ ostream& info(ostream& o, string name, knotlist& l)
       o << "cyclic" << endl;
 
     o << endl;
+#ifndef KNOTS_BUILD
   }
+#endif
   return o;
 }
 
@@ -243,7 +254,11 @@ struct eqnprop : public knotprop<eqn> {
     : knotprop<eqn>(l), d(d), psi(psi) {}
 
   eqn solo(Int) {
+#ifdef KNOTS_BUILD
+    assert(false);
+#else
     assert(False);
+#endif
     return eqn(0.0,1.0,0.0,0.0);
   }
 

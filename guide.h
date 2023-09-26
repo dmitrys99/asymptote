@@ -10,7 +10,10 @@
 #include <iostream>
 #include "knot.h"
 #include "flatguide.h"
+
+#ifndef KNOTS_BUILD
 #include "settings.h"
+#endif
 
 namespace camp {
 
@@ -252,16 +255,22 @@ public:
   }
 
   path solve() {
+#ifndef KNOTS_BUILD
     if (settings::verbose>3) {
+#endif
       cerr << "solving guide:\n";
       print(cerr); cerr << "\n\n";
+#ifndef KNOTS_BUILD
     }
+#endif
 
     flatguide g;
     this->flatten(g);
     path p=g.solve(false);
 
+#ifndef KNOTS_BUILD
     if (settings::verbose>3)
+#endif
       cerr << "solved as:\n" << p << "\n\n";
 
     return p;
