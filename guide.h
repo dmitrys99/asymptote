@@ -36,7 +36,8 @@ public:
   virtual bool cyclic() {return false;}
 
   virtual void print(ostream& out) const {
-    out << "nullpath";
+    out << "nullpath()\n";
+    //out << "nullpath";
   }
 
   // Needed so that multiguide can know where to put in ".." symbols.
@@ -79,7 +80,8 @@ public:
   }
 
   void print(ostream& out) const {
-    out << z;
+    out << "!pairguide(pair" << z << ")";
+    //out << z;
   }
 
   side printLocation() const {
@@ -107,7 +109,8 @@ public:
   bool cyclic() {return p.cyclic();}
 
   void print(ostream& out) const {
-    out << p;
+    out << "!pathguide(" << p << ")\n";
+    //out << p;
   }
 
   side printLocation() const {
@@ -148,8 +151,9 @@ public:
       tin(spec.getIn(), spec.getAtleast()) {}
 
   void print(ostream& out) const {
-    out << (tout.atleast ? ".. tension atleast " : ".. tension ")
-        << tout.val << " and " << tin.val << " ..";
+    out << "!tensionguide(tensionSpecifier(/*out*/" << tout.val << ", /*in*/" << tin.val << ", /*atleast*/"<< tout.atleast<<"))\n";
+//    out << (tout.atleast ? ".. !tension atleast " : ".. !tension ")
+//        << tout.val << " and " << tin.val << " ..";
   }
 
   side printLocation() const {
@@ -188,7 +192,8 @@ public:
     : p(new curlSpec(spec.getValue())), s(spec.getSide()) {}
 
   void print(ostream& out) const {
-    out << *p;
+    out << "!specguide(" << *p << ", " << s <<")\n";
+    //out << *p;
   }
 
   side printLocation() const {
@@ -213,8 +218,8 @@ public:
     : zout(z),zin(z) {}
 
   void print(ostream& out) const {
-    out << ".. controls "
-        << zout << " and " << zin << " ..";
+    out << "!controlguide(pair" << zout << ", pair" << zin << ")\n";
+//    out << ".. controls " << zout << " and " << zin << " ..";
   }
 
   side printLocation() const {
@@ -307,7 +312,8 @@ public:
   }
 
   void print(ostream& out) const {
-    out << "cycle";
+    out << "!cycleguide()\n";
+//    out << "cycle";
   }
 
   side printLocation() const {
