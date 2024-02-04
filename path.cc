@@ -1105,7 +1105,7 @@ ostream& operator<< (ostream& out, const path& p)
     for(Int i = 0; i < n; i++) {
       out << p.point(i);
       if(p.straight(i)) out << "--";
-      else
+      //else
         out << ".. controls " << p.postcontrol(i) << " and "
             << p.precontrol(i+1) << newl << " ..";
     }
