@@ -12,11 +12,16 @@
 #include "util.h"
 #include "angle.h"
 #include "camperror.h"
-#include "mathop.h"
+//#include "mathop.h"
+
 #include "predicates.h"
 #include "rounding.h"
 
 namespace camp {
+
+inline bool _validInt(double x) {
+  return x > (double) Int_MIN-0.5 && x < (double) Int_MAX+0.5;
+}
 
 const double Fuzz2=1000.0*DBL_EPSILON;
 const double Fuzz=sqrt(Fuzz2);
@@ -425,7 +430,7 @@ path path::subpath(double a, double b) const
     bL = nodes[(Int)floor(b)];
     bR = nodes[(Int)ceil(b)];
   } else {
-    if(run::validInt(a) && run::validInt(b)) {
+    if(_validInt(a) && _validInt(b)) {
       aL = nodes[imod((Int) floor(a),n)];
       aR = nodes[imod((Int) ceil(a),n)];
       bL = nodes[imod((Int) floor(b),n)];

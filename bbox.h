@@ -9,7 +9,9 @@
 #define BBOX_H
 
 #include "pair.h"
+#ifndef KNOTS_BUILD
 #include "settings.h"
+#endif
 
 namespace camp {
 
@@ -227,6 +229,7 @@ inline bbox pad(bbox b1, bbox b2)
 
 inline bbox svgbbox(const bbox& B, pair shift=pair(0,0))
 {
+#ifndef KNOTS_BUILD
   bbox b=B;
   double height=b.top-b.bottom;
   double threshold=12.0*settings::tex2ps;
@@ -236,6 +239,11 @@ inline bbox svgbbox(const bbox& B, pair shift=pair(0,0))
     b.bottom += offset;
   }
   return b.shift(pair(1.99*settings::cm,1.9*settings::cm)+shift);
+#else
+  bbox b;
+  b.empty = true;
+  return b;
+#endif
 }
 
 } // namespace camp
