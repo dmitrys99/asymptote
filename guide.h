@@ -263,8 +263,10 @@ public:
 #ifndef KNOTS_BUILD
     if (settings::verbose>3) {
 #endif
+#ifdef KNOTS_VERBOSE
       cerr << "solving guide:\n";
       print(cerr); cerr << "\n\n";
+#endif
 #ifndef KNOTS_BUILD
     }
 #endif
@@ -276,8 +278,9 @@ public:
 #ifndef KNOTS_BUILD
     if (settings::verbose>3)
 #endif
+#ifdef KNOTS_VERBOSE
       cerr << "solved as:\n" << p << "\n\n";
-
+#endif
     return p;
   }
 
