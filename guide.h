@@ -49,7 +49,9 @@ public:
 
 inline ostream& operator<< (ostream& out, const guide& g)
 {
+#ifdef KNOTS_VERBOSE
   g.print(out);
+#endif // KNOTS_VERBOSE
   return out;
 }
 
@@ -264,9 +266,9 @@ public:
     if (settings::verbose>3) {
 #endif
 #ifdef KNOTS_VERBOSE
-      cerr << "solving guide:\n";
+      cerr << "solving gu ide:\n";
       print(cerr); cerr << "\n\n";
-#endif
+#endif // KNOTS_VERBOSE
 #ifndef KNOTS_BUILD
     }
 #endif
@@ -276,10 +278,13 @@ public:
     path p=g.solve(false);
 
 #ifndef KNOTS_BUILD
-    if (settings::verbose>3)
+    if (settings::verbose>3) {
 #endif
 #ifdef KNOTS_VERBOSE
       cerr << "solved as:\n" << p << "\n\n";
+#endif // KNOTS_VERBOSE
+#ifndef KNOTS_BUILD
+    }
 #endif
     return p;
   }
