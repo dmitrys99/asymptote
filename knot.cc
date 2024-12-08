@@ -10,7 +10,10 @@
 #include "util.h"
 
 #include "angle.h"
+
+#ifndef KNOTS_BUILD
 #include "settings.h"
+#endif
 
 namespace camp {
 
@@ -20,20 +23,32 @@ namespace camp {
 template <typename T>
 ostream& info(ostream& o, const char *name, cvector<T>& v)
 {
+#ifndef KNOTS_BUILD
   if (settings::verbose > 3) {
+#endif
+
+#ifdef KNOTS_VERBOSE
     o << name << ":\n\n";
 
     for(Int i=0; i < (Int) v.size(); ++i)
       o << v[i] << endl;
 
     o << endl;
+#endif // KNOTS_VERBOSE
+
+#ifndef KNOTS_BUILD
   }
+#endif
   return o;
 }
 
 ostream& info(ostream& o, string name, knotlist& l)
 {
+#ifndef KNOTS_BUILD
   if (settings::verbose > 3) {
+#endif
+
+#ifdef KNOTS_VERBOSE
     o << name << ":\n\n";
 
     for(Int i=0; i < (Int) l.size(); ++i)
@@ -43,7 +58,11 @@ ostream& info(ostream& o, string name, knotlist& l)
       o << "cyclic" << endl;
 
     o << endl;
+#endif // KNOTS_VERBOSE
+
+#ifndef KNOTS_BUILD
   }
+#endif
   return o;
 }
 
@@ -243,7 +262,11 @@ struct eqnprop : public knotprop<eqn> {
     : knotprop<eqn>(l), d(d), psi(psi) {}
 
   eqn solo(Int) {
+#ifdef KNOTS_BUILD
+    assert(false);
+#else
     assert(False);
+#endif
     return eqn(0.0,1.0,0.0,0.0);
   }
 
@@ -618,25 +641,33 @@ void encodeStraight(protopath& p, Int k, knotlist& l)
 void solveSection(protopath& p, Int k, knotlist& l)
 {
   if (l.length()>0) {
+    #ifdef KNOTS_VERBOSE
     info(cerr, "solving section", l);
+    #endif // KNOTS_VERBOSE
 
     // Calculate useful properties.
     cvector<pair>   dz  =  dzprop(l)   .compute();
     cvector<double> d   =   dprop(l,dz).compute();
     cvector<double> psi = psiprop(l,dz).compute();
 
+    #ifdef KNOTS_VERBOSE
     INFO(dz); INFO(d); INFO(psi);
+    #endif // KNOTS_VERBOSE
 
     // Build and solve the linear equations for theta.
     cvector<eqn>        e = eqnprop(l,d,psi).compute();
+    #ifdef KNOTS_VERBOSE
     INFO(e);
+    #endif // KNOTS_VERBOSE
 
     if (straightSection(e))
       // Handle straight section as special case.
       encodeStraight(p,k,l);
     else {
       cvector<double> theta = solveThetas(l,e);
+    #ifdef KNOTS_VERBOSE
       INFO(theta);
+    #endif // KNOTS_VERBOSE
 
       // Calculate the control points.
       cvector<pair> post = postcontrolprop(l,dz,psi,theta).compute();
@@ -789,11 +820,15 @@ path solve(knotlist& l)
   if (l.empty())
     return path();
   else {
+    #ifdef KNOTS_VERBOSE
     info(cerr, "input knotlist", l);
+    #endif // KNOTS_VERBOSE
     curlEnds(l);
     controlDuplicates(l).exec();
     partnerUp(l).exec();
+    #ifdef KNOTS_VERBOSE
     info(cerr, "specified knotlist", l);
+    #endif // KNOTS_VERBOSE
     return solveSpecified(l);
   }
 }

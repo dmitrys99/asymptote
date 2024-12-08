@@ -959,7 +959,9 @@ bool intersections(double &s, double &t, std::vector<double>& S,
                    std::vector<double>& T, path& p, path& q,
                    double fuzz, bool single, bool exact, unsigned depth)
 {
+#ifndef KNOTS_BUILD
   if(errorstream::interrupt) throw interrupted();
+#endif
 
   double fuzz2=max(fuzzFactor*fuzz*fuzz,Fuzz2);
 
@@ -1103,7 +1105,7 @@ ostream& operator<< (ostream& out, const path& p)
     for(Int i = 0; i < n; i++) {
       out << p.point(i);
       if(p.straight(i)) out << "--";
-      else
+      //else
         out << ".. controls " << p.postcontrol(i) << " and "
             << p.precontrol(i+1) << newl << " ..";
     }
